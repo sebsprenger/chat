@@ -9,9 +9,10 @@ import (
 )
 
 var (
-	ip   = flag.String("ip", "localhost", "server ip")
-	port = flag.String("port", "9001", "server port")
-	name = flag.String("name", "nobody", "name used for chat")
+	ip         = flag.String("ip", "localhost", "server ip")
+	port       = flag.String("port", "9001", "server port")
+	name       = flag.String("name", "nobody", "name used for chat")
+	encryption = flag.Bool("enc", false, "use encryption")
 )
 
 func main() {
@@ -21,7 +22,7 @@ func main() {
 
 	consoleInput := ConsoleSender{
 		scanner:          NewConsoleChatScanner(),
-		messageFormatter: plugin.NewMessageFormatter(*name),
+		messageFormatter: plugin.NewMessageFormatter(*name, *encryption),
 	}
 
 	client := client.NewChatClient()
