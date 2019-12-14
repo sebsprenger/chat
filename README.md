@@ -1,2 +1,2 @@
-# chat
-Chat program to facilitate a Hacker School workshop
+# chatclient
+Chat program to facilitate a Hacker School workshop.

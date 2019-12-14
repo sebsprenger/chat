@@ -9,7 +9,7 @@ import (
 
 type ConsoleSender struct {
 	scanner          ConsoleChatScanner
-	messageFormatter plugin.MessageFormatter
+	messagePreparer plugin.MessagePreparer
 }
 
 func (consoleChat ConsoleSender) SendChatMessagesTo(client *client.ChatClient) {
@@ -19,7 +19,7 @@ func (consoleChat ConsoleSender) SendChatMessagesTo(client *client.ChatClient) {
 			break
 		}
 
-		msg := consoleChat.messageFormatter.CreateMessage(input)
+		msg := consoleChat.messagePreparer.CreateMessage(input)
 
 		err = client.Send(msg)
 		if err != nil {

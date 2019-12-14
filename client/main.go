@@ -13,17 +13,19 @@ var (
 	port       = flag.String("port", "9001", "server port")
 	name       = flag.String("name", "nobody", "name used for chat")
 	encryption = flag.Bool("enc", false, "use encryption")
+	caesar     = flag.Int("caesar", 0, "defines the key for caesar encryption")
 )
 
 func main() {
 	flag.Parse()
 
-	consoleOutput := plugin.ConsoleReceiver{}
+	encryptionAlgorithm := plugin.NewCaesar(*encryption, *caesar)
 
 	consoleInput := ConsoleSender{
-		scanner:          NewConsoleChatScanner(),
-		messageFormatter: plugin.NewMessageFormatter(*name, *encryption),
+		scanner:         NewConsoleChatScanner(),
+		messagePreparer: plugin.NewMessagePreparer(*name, encryptionAlgorithm),
 	}
+	consoleOutput := plugin.NewConsoleDisplay(encryptionAlgorithm)
 
 	client := client.NewChatClient()
 	err := client.Connect(*ip, *port)
@@ -34,5 +36,4 @@ func main() {
 
 	client.ReceiveChatMessagenOn(consoleOutput)
 	consoleInput.SendChatMessagesTo(&client)
-
 }
